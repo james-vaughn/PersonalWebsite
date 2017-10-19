@@ -7,3 +7,4 @@ public class TestMain extends TestCase{
         assertEquals(1, 1);
     }
 }
+
