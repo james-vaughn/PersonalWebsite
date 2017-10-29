@@ -7,11 +7,11 @@ import static spark.Spark.*;
 
 public class Main {
     public static void main(String[] args) {
-        port(80); //set to standard HTTP port
+        port(8080); //set to standard HTTP port
         staticFiles.location("/public");
 
         get("/", (request, response) -> {
-            return new MustacheTemplateEngine().render(new ModelAndView(new HashMap<String, Object>(), "public/html/index.html"));
+            return new MustacheTemplateEngine().render(new ModelAndView(new HashMap<String, Object>(), "index.html"));
         });
     }
 }
