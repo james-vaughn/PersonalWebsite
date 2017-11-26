@@ -5,7 +5,15 @@ html
     link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css")
     link(rel='stylesheet', href='/stylesheets/style.css')
 
-  body
+  body(style="background-color: lightgray;")
+    nav(class="navbar navbar-toggleable-md navbar-dark bg-inverse mb-4")
+      div(class="container-fluid")
+        div(class="navbar-header")
+          a(class="navbar-brand" href="/") Home
+        ul(class="nav navbar-nav")
+          li
+            a(href="#") Page 1
+
     block content
 
 script(type="text/javacript", href="https://code.jquery.com/jquery-3.2.1.min.js")
