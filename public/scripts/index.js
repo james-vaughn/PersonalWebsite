@@ -43,7 +43,7 @@ $(document).ready(function () {
     }
 
     function createMarkovImage(oldContext, newContext) {
-        
+
     }
 });
 
