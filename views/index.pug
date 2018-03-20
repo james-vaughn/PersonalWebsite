@@ -1,5 +1,18 @@
 extends layout
 
 block content
-  h1 #{title}
-  p Welcome to #{title}
+  p Upload an image file
+  form(name="Upload", action="#" enctype="multipart/form-data" method="post")
+    p Filename:
+      input(type="file" name="submitfile" id="submitfile", accept="image/*")
+
+  div
+    b Original
+    canvas(id="original")
+
+  div
+    b New
+    canvas(id="new")
+
+block scripts
+  script(type="text/javascript", src="/scripts/index.js")
