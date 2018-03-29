@@ -17,8 +17,8 @@ $(document).ready(function () {
 
                 const img = new Image();
                 img.onload = function() {
-                    drawImageScaled(img, originalContext);
-
+                    originalContext.drawImage(img, 0, 0, width, height);
+                    colors(originalContext);
                     createMarkovImage(originalContext, newId[0].getContext("2d"));
                 };
 
@@ -32,22 +32,33 @@ $(document).ready(function () {
         }
     });
 
-    function drawImageScaled(img, ctx) {
-        var canvas = ctx.canvas ;
-        var hRatio = canvas.width  / img.width    ;
-        var vRatio =  canvas.height / img.height  ;
-        var ratio  = Math.min ( hRatio, vRatio );
-        var centerShift_x = ( canvas.width - img.width*ratio ) / 2;
-        var centerShift_y = ( canvas.height - img.height*ratio ) / 2;
-        ctx.clearRect(0,0,canvas.width, canvas.height);
-        ctx.drawImage(img, 0,0, img.width, img.height,
-            centerShift_x,centerShift_y,img.width*ratio, img.height*ratio);
-    }
-
     function createMarkovImage(oldContext, newContext) {
         let iterNode = createMarkovChain(oldContext, newContext);
         iterNode.print();
-        newContext.putImageData(oldContext.getImageData(0, 0 , width, height),0, 0);
+
+        for (let x = 0; x < width; x++) {
+            for (let y = 0; y < height; y++) {
+                iterNode = iterNode.next();
+                drawPixel(newContext, x, y, iterNode.value);
+            }
+        }
+    }
+
+    function colors(ctx) {
+        let pixelData = ctx.getImageData(0, 0, width, height).data;
+        let colors = [];
+
+        outer:
+        for (let i = 0, n = pixelData.length; i < n; i += 4) {
+            let color = new Color(pixelData[i], pixelData[i + 1], pixelData[i + 2], pixelData[i + 3]);
+            for(let c of colors) {
+                if(c.equals(color)) {
+                    continue outer;
+                }
+            }
+            colors.push(color);
+        }
+        console.log(colors);
     }
 
     function createMarkovChain(oldContext, newContext) {
@@ -58,7 +69,10 @@ $(document).ready(function () {
 
         for (let i = 0, n = pixelData.length; i < n; i += 4) {
             let color = new Color(pixelData[i], pixelData[i+1], pixelData[i+2], pixelData[i+3]);
-            iterNode = iterNode.adjustNeighbor(color);
+
+            if(color.a > 0) {
+                iterNode = iterNode.adjustNeighbor(color);
+            }
         }
 
         return headNode;

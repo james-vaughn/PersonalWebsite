@@ -1,11 +1,13 @@
 class MarkovNode {
     constructor(value) {
-        this.value = value
-        this.neighbors = {};
+        this.value = value;
+        this.freq = 0;
+        this.neighbors = [this];
     }
 
     addNeighbor(neighbor, amt = 1) {
-        this.neighbors[neighbor] = amt;
+        neighbor.freq = 1;
+        this.neighbors.push(neighbor);
         return neighbor;
     }
 
@@ -16,16 +18,16 @@ class MarkovNode {
             neighborNode = new MarkovNode(neighborVal);
             this.addNeighbor(neighborNode);
         } else {
-            const currAmt = this.neighbors[neighborNode];
-            this.neighbors[neighborNode] = Math.max(0, currAmt + amt);
+            const currAmt = neighborNode.freq;
+            neighborNode.freq = Math.max(0, currAmt + amt);
         }
 
         return neighborNode;
     }
 
     neighborWithValue(value) {
-        for (let node in this.neighbors) {
-            if (node.value === value) {
+        for (let node of this.neighbors) {
+            if (node.value.equals(value)) {
                 return node;
             }
         }
@@ -34,20 +36,44 @@ class MarkovNode {
     }
 
     next() {
+        let total = 0;
+        for(let node of this.neighbors) {
+            total += node.freq;
+        }
 
+        let chosen = Math.floor(total * Math.random());
+
+        for(let node of this.neighbors) {
+            chosen -= node.freq;
+
+            if(chosen <= 0) {
+                return node;
+            }
+        }
+
+        return undefined;
     }
 
     print() {
         let visited = [];
+        let queue = [this];
 
-        for (let neighbor in Object.keys(this.neighbors)) {
-            console.log(neighbor);
-            if(visited.indexOf(neighbor) !== -1) continue;
-
+        while (queue.length > 0) {
+            let neighbor = queue.shift();
             visited.push(neighbor);
-            console.log(neighbor.value);
 
-            neighbor.print();
+            console.log(neighbor);
+
+            outer:
+            for(let node of neighbor.neighbors) {
+                for(let vNode of visited) {
+                    if(vNode.value.equals(node.value)) {
+                        continue outer;
+                    }
+                }
+
+                queue.push(node);
+            }
         }
     }
 }
