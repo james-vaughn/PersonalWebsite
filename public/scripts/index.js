@@ -18,7 +18,7 @@ $(document).ready(function () {
                 const img = new Image();
                 img.onload = function() {
                     originalContext.drawImage(img, 0, 0, width, height);
-                    colors(originalContext);
+                    // colors(originalContext);
                     createMarkovImage(originalContext, newId[0].getContext("2d"));
                 };
 
@@ -33,15 +33,16 @@ $(document).ready(function () {
     });
 
     function createMarkovImage(oldContext, newContext) {
-        let iterNode = createMarkovChain(oldContext, newContext);
-        iterNode.print();
+        // let iterNode = createMarkovChain(oldContext, newContext);
+        let chain = createMarkovChain(oldContext, newContext);
 
-        for (let x = 0; x < width; x++) {
-            for (let y = 0; y < height; y++) {
-                iterNode = iterNode.next();
-                drawPixel(newContext, x, y, iterNode.value);
-            }
-        }
+
+        // for (let x = 0; x < width; x++) {
+        //     for (let y = 0; y < height; y++) {
+        //         iterNode = iterNode.next();
+        //         drawPixel(newContext, x, y, iterNode.value);
+        //     }
+        // }
     }
 
     function colors(ctx) {
@@ -62,16 +63,38 @@ $(document).ready(function () {
     }
 
     function createMarkovChain(oldContext, newContext) {
-        let headNode = new MarkovNode(new Color(0,0,0,1)); //todo
-        let iterNode = headNode;
+        // let headNode = new MarkovNode(new Color(0,0,0,1)); //todo
+        // let iterNode = headNode;
+        let chain = new MarkovChain();
 
         let pixelData = oldContext.getImageData(0, 0, width, height).data;
 
-        for (let i = 0, n = pixelData.length; i < n; i += 4) {
-            let color = new Color(pixelData[i], pixelData[i+1], pixelData[i+2], pixelData[i+3]);
+        for (let h = 0; h < height; h++) {
+            for (let w = 0; w < width; w++) {
 
-            if(color.a > 0) {
-                iterNode = iterNode.adjustNeighbor(color);
+                let color = colorFromPos(pixelData, w-1, h);
+                adjustNeighbor(iterNode, color);
+
+                color = colorFromPos(pixelData, w-1, h-1);
+                adjustNeighbor(iterNode, color);
+
+                color = colorFromPos(pixelData, w-1, h+1);
+                adjustNeighbor(iterNode, color);
+
+                color = colorFromPos(pixelData, w, h-1);
+                adjustNeighbor(iterNode, color);
+
+                color = colorFromPos(pixelData, w, h+1);
+                adjustNeighbor(iterNode, color);
+
+                color = colorFromPos(pixelData, w-1, h);
+                adjustNeighbor(iterNode, color);
+
+                color = colorFromPos(pixelData, w+1, h);
+                adjustNeighbor(iterNode, color);
+
+                color = colorFromPos(pixelData, w+1, h);
+                iterNode = adjustNeighbor(iterNode, color);
             }
         }
 
@@ -82,6 +105,25 @@ $(document).ready(function () {
         context.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`;
         context.fillRect(x, y, 1, 1);
     }
+
+    function colorFromPos(pixelData, w, h) {
+        //clamp w and h to prevent bad values
+        w = clamp(w, 0, width);
+        h = clamp(h, 0, height);
+
+        const pos = (w, h) => 4 * (h * width + w);
+        const pixelIndex = pos(w, h);
+        return new Color(pixelData[pixelIndex], pixelData[pixelIndex+1], pixelData[pixelIndex+2], 1);
+    }
+
+    function adjustNeighbor(markovNode, color) {
+        //if the color will be visible
+        if(color.a > 0) {
+            return markovNode.adjustNeighbor(color);
+        }
+    }
+
+    function clamp(x, min, max) {
+        return Math.min(max, Math.max(min, x));
+    }
 });
-
-

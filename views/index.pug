@@ -7,14 +7,19 @@ block content
         input(type="file" name="submitfile" id="submitfile", accept="image/*")
 
     div
-        b Original
-        canvas(id="original")
+        center
+            strong
+                b Original
+        canvas(id="original", width=1000, height=500)
 
     div
-        b New
-        canvas(id="new")
+        center
+            strong
+                b New
+        canvas(id="new", width=1000, height=500)
 
 block scripts
     script(type="text/javascript", src="/scripts/color.js")
+    script(type="text/javascript", src="/scripts/markov_fixed.js")
     script(type="text/javascript", src="/scripts/markov.js")
     script(type="text/javascript", src="/scripts/index.js")

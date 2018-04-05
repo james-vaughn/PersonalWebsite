@@ -2,10 +2,10 @@ class MarkovNode {
     constructor(value) {
         this.value = value;
         this.freq = 0;
-        this.neighbors = [this];
+        this.neighbors = [];
     }
 
-    addNeighbor(neighbor, amt = 1) {
+    addNeighbor(neighbor) {
         neighbor.freq = 1;
         this.neighbors.push(neighbor);
         return neighbor;
@@ -38,15 +38,18 @@ class MarkovNode {
     next() {
         let total = 0;
         for(let node of this.neighbors) {
-            total += node.freq;
+            //total += node.freq;
+            total += 1; //random walk
         }
 
-        let chosen = Math.floor(total * Math.random());
+        let chosen = Math.ceil(total * Math.random());
 
         for(let node of this.neighbors) {
-            chosen -= node.freq;
+            //chosen -= node.freq;
+            chosen -= 1; //random walk
 
             if(chosen <= 0) {
+                // console.log(node.value);
                 return node;
             }
         }
@@ -54,6 +57,7 @@ class MarkovNode {
         return undefined;
     }
 
+    //kinda doesnt work
     print() {
         let visited = [];
         let queue = [this];
@@ -68,6 +72,7 @@ class MarkovNode {
             for(let node of neighbor.neighbors) {
                 for(let vNode of visited) {
                     if(vNode.value.equals(node.value)) {
+                    // if(vNode === node) {
                         continue outer;
                     }
                 }
