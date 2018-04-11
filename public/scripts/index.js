@@ -36,10 +36,9 @@ $(document).ready(function () {
         // let iterNode = createMarkovChain(oldContext, newContext);
         let chain = createMarkovChain(oldContext, newContext);
 
-
         // for (let x = 0; x < width; x++) {
         //     for (let y = 0; y < height; y++) {
-        //         iterNode = iterNode.next();
+        //         chain();
         //         drawPixel(newContext, x, y, iterNode.value);
         //     }
         // }
@@ -72,33 +71,35 @@ $(document).ready(function () {
         for (let h = 0; h < height; h++) {
             for (let w = 0; w < width; w++) {
 
+                let currColor = colorFromPos(pixelData, w, h);
+
                 let color = colorFromPos(pixelData, w-1, h);
-                adjustNeighbor(iterNode, color);
+                chain.put(currColor, color);
 
                 color = colorFromPos(pixelData, w-1, h-1);
-                adjustNeighbor(iterNode, color);
+                chain.put(currColor, color);
 
                 color = colorFromPos(pixelData, w-1, h+1);
-                adjustNeighbor(iterNode, color);
+                chain.put(currColor, color);
 
                 color = colorFromPos(pixelData, w, h-1);
-                adjustNeighbor(iterNode, color);
+                chain.put(currColor, color);
 
                 color = colorFromPos(pixelData, w, h+1);
-                adjustNeighbor(iterNode, color);
+                chain.put(currColor, color);
 
                 color = colorFromPos(pixelData, w-1, h);
-                adjustNeighbor(iterNode, color);
+                chain.put(currColor, color);
 
                 color = colorFromPos(pixelData, w+1, h);
-                adjustNeighbor(iterNode, color);
+                chain.put(currColor, color);
 
                 color = colorFromPos(pixelData, w+1, h);
-                iterNode = adjustNeighbor(iterNode, color);
+                chain.put(currColor, color);
             }
         }
 
-        return headNode;
+        return chain;
     }
 
     function drawPixel(context, x, y, color) {
@@ -114,13 +115,6 @@ $(document).ready(function () {
         const pos = (w, h) => 4 * (h * width + w);
         const pixelIndex = pos(w, h);
         return new Color(pixelData[pixelIndex], pixelData[pixelIndex+1], pixelData[pixelIndex+2], 1);
-    }
-
-    function adjustNeighbor(markovNode, color) {
-        //if the color will be visible
-        if(color.a > 0) {
-            return markovNode.adjustNeighbor(color);
-        }
     }
 
     function clamp(x, min, max) {

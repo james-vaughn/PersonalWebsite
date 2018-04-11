@@ -2,14 +2,38 @@
 class MarkovChain {
     constructor() {
         // pixel => neighbor pixels => frequency
-        this.mapping = {};
+        this.mapping = [];
+        this.state = null; //state for iterating with
     }
 
-    add(currColor, neighborColor) {
-        if(this.mapping[currColor][neighborColor] === undefined) {
-            this.mapping[currColor][neighborColor] = 1;
-        } else {
-            this.mapping[currColor][neighborColor] += 1;
+    put(currColor, neighborColor) {
+        for(let pair of this.mapping) {
+            if(pair.left.equals(currColor)) {
+                for(let neighbor of pair.right) {
+                    if(neighbor.left.equals(neighborColor)) {
+                        neighbor.right += 1;
+                        return;
+                    }
+                }
+
+                pair.right.push(new Pair(neighborColor, 1));
+                return;
+
+            }
         }
+
+        this.mapping.push(new Pair(currColor, [new Pair(neighborColor, 1)]));
+    }
+
+    next(currColor) {
+        //for
+        return currColor;
+    }
+}
+
+class Pair {
+    constructor(left, right) {
+        this.left = left;
+        this.right = right;
     }
 }
