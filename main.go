@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"./Controllers"
+	"github.com/james-vaughn/PersonalWebsite/Controllers"
 )
 
 func main() {
@@ -13,7 +13,7 @@ func main() {
 	r.Use(gin.Recovery())
 	r.LoadHTMLGlob("Views/*")
 
-	r.GET("/", Controllers.Index)
+	Controllers.RegisterRoutes(r)
 
 	r.Run(PORT)
 }
