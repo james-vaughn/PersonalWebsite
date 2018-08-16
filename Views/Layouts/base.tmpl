@@ -1,0 +1,24 @@
+{{define "base"}}
+<html>
+{{block "header" .}}
+	<h1>
+		{{ .title }}
+	</h1>
+{{end}}
+
+<div id="content" class="pad-c">
+    {{block "content" .}}
+    {{end}}
+
+    <ul>
+    <li><a href="/termites">Termite Cellular Automata</a></li>
+    <li><a href="/particles">Unity Particle Systems</a></li>
+    <li><a href="/markovchains">Markov Chains</a></li>
+    </ul>
+</div>
+
+<link rel="stylesheet" type="text/css" href="/Public/Css/base.css">
+{{block "scripts" .}}
+{{end}}
+</html>
+{{end}}
