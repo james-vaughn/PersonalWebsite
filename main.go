@@ -8,8 +8,6 @@ import (
 )
 
 func main() {
-	const PORT = ":80"
-
 	r := gin.Default()
 
 	r.Use(gin.Recovery())

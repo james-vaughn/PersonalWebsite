@@ -19,24 +19,20 @@ p {
 }
 
 .header-img-f {
-    width: 900px;
-    height: 500px;
+    width: 100%;
 }
 
 .header-img-sq {
     width: 500px;
-    height: 500px;
 }
 
 .display-img-f {
     width: 450px;
-    height: 250px;
     text-align: justify;
 }
 
 .display-img-sq {
-    width: 32%;
-    height: 32%;
+    width: 30%;
     text-align: justify;
 }
 
