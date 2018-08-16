@@ -36,15 +36,21 @@ p {
     text-align: justify;
 }
 
+#navbar {
+    background: antiquewhite;
+    border-radius: 15px;
+}
+
 #content {
     text-align: center;
     background: antiquewhite;
 }
 
-.pad-c {
+.container {
     padding-left: 10%;
     padding-right: 10%;
     padding-bottom: 15px;
+    border-radius: 15px;
 }
 
 .pad-t {

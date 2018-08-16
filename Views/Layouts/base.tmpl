@@ -5,24 +5,27 @@
 {{end}}
 
 <html>
-{{block "header" .}}
-	<h1>
-		{{ .title }}
-	</h1>
-{{end}}
 
-<div id="container" class="pad-c pad-b">
-<div id="content" class="pad-t pad-c">
-    {{block "content" .}}
-    {{end}}
-
-    <ul>
-    <li><a href="/">Home</a></li>
-    <li><a href="/termites">Termite Cellular Automata</a></li>
-    <li><a href="/particles">Unity Particle Systems</a></li>
-    <li><a href="/markovchains">Markov Chains</a></li>
-    </ul>
+<div class="container">
+    <div id="navbar">
+        <h1>
+            {{ .title }}
+        </h1>
+    </div>
 </div>
+
+<div class="container pad-b">
+    <div id="content" class="pad-t container">
+        {{block "content" .}}
+        {{end}}
+
+        <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/termites">Termite Cellular Automata</a></li>
+        <li><a href="/particles">Unity Particle Systems</a></li>
+        <li><a href="/markovchains">Markov Chains</a></li>
+        </ul>
+    </div>
 </div>
 
 {{block "scripts" .}}
