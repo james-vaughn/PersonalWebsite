@@ -1,4 +1,9 @@
 {{define "base"}}
+
+<link rel="stylesheet" type="text/css" href="/Public/Css/base.css" />
+{{block "stylesheets" .}}
+{{end}}
+
 <html>
 {{block "header" .}}
 	<h1>
@@ -20,7 +25,6 @@
 </div>
 </div>
 
-<link rel="stylesheet" type="text/css" href="/Public/Css/base.css">
 {{block "scripts" .}}
 {{end}}
 </html>
