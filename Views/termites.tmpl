@@ -1,1 +1,33 @@
 {{template "base" .}}
+
+{{define "content"}}
+
+<img src="/Public/Images/Termite/4.png" class="header-img-f" />
+
+<p>
+Termites are a form of cellular automata in which a group of cells are placed into a grid
+and are allowed to wander through the grid according to a movement algorithm.
+</p>
+
+<p>
+In this case, the termites are given a color and leave a trail behind according to that color.
+Multiple movement algorithms are used to produce different effects. Without randomness, the resulting
+image tends to be rigid with a few large blocks of color. More randomness in turn direction tends to result in
+more interesting shapes. The movement algorithm can be further altered by determining when the termites decide to turn versus go straight.
+If the termites head straight until they run into another termite's trail, the result will be more geometric compared
+to if the termite can turn at any point. The latter produces a blobbier effect.
+</p>
+
+<p>
+For this project, multiple termite images are composed together to form the resulting image. Each layer has different
+configurations, such as how many termites are present, the colors of the termites, their starting positions and their
+starting proximity to other termites, and their movement algorithms. The result is then composed with simplex noise to produce a more dynamic image by imposing a shadow on the image.
+This combined with a bump mapping gives the effect of depth in the image. Without these two transforms,
+the image feels flat and boring.
+</p>
+
+<img src="/Public/Images/Termite/1.png" class="display-img-sq" />
+<img src="/Public/Images/Termite/2.png" class="display-img-sq" />
+<img src="/Public/Images/Termite/3.png" class="display-img-sq" />
+
+{{end}}

@@ -6,9 +6,12 @@
 	</h1>
 {{end}}
 
-{{block "content" .}}
-{{end}}
+<div id="content" class="pad-c">
+    {{block "content" .}}
+    {{end}}
+</div>
 
+<link rel="stylesheet" type="text/css" href="/Public/Css/base.css">
 {{block "scripts" .}}
 {{end}}
 </html>
