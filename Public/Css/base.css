@@ -1,3 +1,18 @@
+html {
+    background: lightgray;
+}
+h1 {
+    text-align: center;
+}
+
+ul, p {
+    padding-top: 15px;
+}
+
+p {
+    text-align: justify;
+}
+
 * {
     font-family: courier;
     font-weight: bold;
@@ -20,17 +35,9 @@
 }
 
 .display-img-sq {
-    width: 250px;
-    height: 250px;
+    width: 32%;
+    height: 32%;
     text-align: justify;
-}
-
-h1 {
-    text-align: center;
-}
-
-ul, p {
-    padding-top: 15px;
 }
 
 #content {
@@ -39,6 +46,15 @@ ul, p {
 }
 
 .pad-c {
-    padding-left: 20%;
-    padding-right: 20%;
+    padding-left: 10%;
+    padding-right: 10%;
+    padding-bottom: 15px;
+}
+
+.pad-t {
+    padding-top: 30px;
+}
+
+.pad-b {
+    padding-bottom: 30px;
 }
