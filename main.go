@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	const PORT = ":8080"
+	const PORT = ":80"
 
 	r := gin.Default()
 
