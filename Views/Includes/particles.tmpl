@@ -1,1 +1,35 @@
 {{template "base" .}}
+
+{{define "content"}}
+
+<img src="/Public/Images/Particle/3.png" class="header-img" />
+
+<p>
+<h3>Concept</h3>
+Particle systems are groups of particles within a 3D space which are controlled by the same movement algorithms.
+Systems define the source of the particles, the way they move, their color and size, and various other characteristics
+of the particles.
+</p>
+
+<p>
+<h3>Generation</h3>
+For this project, I used the particle system logic built into the Unity Game Engine. I utilized multiple system to
+create different layers within the images. For example, in the above image, there are two systems. One for the fire
+and one for the water. Within each system, particle colors are adjusted slightly from the previous
+previously generated particle's color, resulting in a variety of color which are close to each other but not
+so close that they blend together. Each of the systems uses perlin noise to apply force to the particles in a semi-random
+way. This gives a wavy effect to the result. Each of the systems generate thousands of particles per second, with each
+particles fading away after a few seconds.
+</p>
+
+<p>
+<h3>Post Processing</h3>
+The particle trails produced by Unity are a bit rough. To address this, I tested out adding RGB noise and blurring
+the result. Adding noise produced a crayon-esque texture, whereas blurring created a watercolor effect.
+</p>
+
+<img src="/Public/Images/Particle/1.png" class="display-img" />
+<img src="/Public/Images/Particle/2.png" class="display-img" />
+<img src="/Public/Images/Particle/4.png" class="display-img" />
+
+{{end}}

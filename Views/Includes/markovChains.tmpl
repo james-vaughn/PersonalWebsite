@@ -1,1 +1,39 @@
 {{template "base" .}}
+
+{{define "content"}}
+
+<img src="/Public/Images/Markov/1.jpg" class="header-img" />
+
+<p>
+<h3>Concept</h3>
+Markov Chains are a statistical model for transitioning between states in a state machine according
+to probability. The order of a markov chain is how many states ahead of the current state for which the probability
+distribution accounts. Higher order chains theoretically produce more coherent results, or an output
+closer to the original training data. The markov model is built ahead of time by analyzing a source
+for its probability distributions and then the model is applied later during the generation phase.
+</p>
+
+<p>
+<h3>Generation</h3>
+The idea of this project was to test the idea that increasing markov chain order would produce a more coherent
+image, as opposed to random noise. I only ever tried 1st, 2nd, and 3rd order chains for this project.
+The markov model is created by first analyzing source image(s) to build up a markov chain where each state is
+a color and the transitions are the probability of the neighboring color being adjacent to the current color.
+Once the model is made, colors are walks through the model, taking colors one at a time and applying that color
+to the output. I applied the colors by picking N random points at the start and painting the markov color
+on one of the points at random. Then, colors can be painted on any point touching any of the painted sections
+or starting points. This produces a quasi-radial output.
+</p>
+
+<p>
+<h3>Post Processing</h3>
+The pixels, being generated from a markov model at random, create a very noisy image. To address this, the output is
+blended to reduce the noise. A bump map is finally applied as it works well with the natural banding of the output,
+and creates clear ridges.
+</p>
+
+<img src="/Public/Images/Markov/4.png" class="display-img" />
+<img src="/Public/Images/Markov/2.png" class="display-img" />
+<img src="/Public/Images/Markov/3.png" class="display-img" />
+
+{{end}}

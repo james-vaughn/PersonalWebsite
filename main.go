@@ -15,7 +15,8 @@ func main() {
 	r.HTMLRender = loadTemplates("./Views")
 	r.Static("/Public", "./Public")
 
-	Controllers.RegisterRoutes(r)
+	Controllers.HomeRegisterRoutes(r)
+	Controllers.ProjectsRegisterRoutes(r)
 
 	r.Run(PORT)
 }
