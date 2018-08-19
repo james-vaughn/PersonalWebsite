@@ -5,11 +5,13 @@ import (
 	"net/http"
 )
 
-func HomeRegisterRoutes(r *gin.Engine) {
-	r.GET("/", HomeIndex)
+type HomeController struct{}
+
+func (c *HomeController) RegisterRoutes(r *gin.Engine) {
+	r.GET("/", c.Index)
 }
 
-func HomeIndex(c *gin.Context) {
+func (*HomeController) Index(c *gin.Context) {
 	c.HTML(http.StatusOK, "homeIndex.tmpl", gin.H {
 		"title" : "Welcome",
 	})

@@ -21,11 +21,16 @@ func main() {
 
 	aggregate := Repositories.NewAggregate(db)
 
-	r := createRouter(aggregate)
+	controllers := []Controllers.Controller{
+		&Controllers.HomeController{},
+		&Controllers.ProjectsController{},
+	}
+
+	r := createRouter(aggregate, controllers...)
 	r.Run(PORT)
 }
 
-func createRouter(aggregate *Repositories.Aggregate) *gin.Engine {
+func createRouter(aggregate *Repositories.Aggregate, controllers ...Controllers.Controller) *gin.Engine {
 	r := gin.Default()
 	r.Use(gin.Recovery())
 	r.Use(Middleware.StatsTracker(aggregate))
@@ -33,8 +38,9 @@ func createRouter(aggregate *Repositories.Aggregate) *gin.Engine {
 	r.HTMLRender = loadTemplates("./Views")
 	r.Static("/Public", "./Public")
 
-	Controllers.HomeRegisterRoutes(r)
-	Controllers.ProjectsRegisterRoutes(r)
+	for _, controller := range controllers {
+		controller.RegisterRoutes(r)
+	}
 
 	return r
 }

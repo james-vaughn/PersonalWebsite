@@ -5,29 +5,31 @@ import (
 	"net/http"
 )
 
-func ProjectsRegisterRoutes(r *gin.Engine) {
-	r.GET("/projects/", ProjectsIndex)
-	r.GET("/projects/termites", Termites)
-	r.GET("/projects/particles", Particles)
-	r.GET("/projects/markovchains", MarkovChains)
+type ProjectsController struct{}
+
+func (c *ProjectsController) RegisterRoutes(r *gin.Engine) {
+	r.GET("/projects/", c.Index)
+	r.GET("/projects/termites", c.Termites)
+	r.GET("/projects/particles", c.Particles)
+	r.GET("/projects/markovchains", c.MarkovChains)
 }
 
-func ProjectsIndex(c *gin.Context) {
-	c.HTML(http.StatusOK, "projectsIndex.tmpl", gin.H {
+func (*ProjectsController) Index(context *gin.Context) {
+	context.HTML(http.StatusOK, "projectsIndex.tmpl", gin.H {
 		"title" : "Welcome",
 	})
 }
 
-func Termites(c *gin.Context) {
-	c.HTML(http.StatusOK, "termites.tmpl", gin.H {
+func (*ProjectsController) Termites(context *gin.Context) {
+	context.HTML(http.StatusOK, "termites.tmpl", gin.H {
 		"title" : "Termites",
 		"next_url" : "/projects/particles",
 		"next" : "Particles",
 	})
 }
 
-func Particles(c *gin.Context) {
-	c.HTML(http.StatusOK, "particles.tmpl", gin.H {
+func (*ProjectsController) Particles(context *gin.Context) {
+	context.HTML(http.StatusOK, "particles.tmpl", gin.H {
 		"title" : "Particles",
 		"next_url" : "/projects/markovchains",
 		"next" : "Markov Chains",
@@ -36,8 +38,8 @@ func Particles(c *gin.Context) {
 	})
 }
 
-func MarkovChains(c *gin.Context) {
-	c.HTML(http.StatusOK, "markovChains.tmpl", gin.H {
+func (*ProjectsController) MarkovChains(context *gin.Context) {
+	context.HTML(http.StatusOK, "markovChains.tmpl", gin.H {
 		"title" : "Markov Chains",
 		"prev_url" : "/projects/particles",
 		"prev" : "Particles",
