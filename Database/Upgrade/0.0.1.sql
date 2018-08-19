@@ -1,0 +1,1 @@
+CREATE TABLE stats (id integer primary key autoincrement, created_at datetime, updated_at datetime, deleted_at datetime, ip_address nvarchar(20), page nvarchar(100));

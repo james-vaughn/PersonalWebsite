@@ -7,4 +7,5 @@ import (
 type Stat struct {
 	gorm.Model
 	IpAddress string
+	Page      string
 }
