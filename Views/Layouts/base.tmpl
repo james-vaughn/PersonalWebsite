@@ -6,51 +6,17 @@
 
 <html>
 
-<div class="container">
-    <div id="navbar">
-        <table>
-            <tr>
-                <td>
-                    <img src="/Public/Images/Misc/hamburgerMenu.png" id="menu" />
-                </td>
-                <td>
-                    <h1>
-                        {{ .title }}
-                    </h1>
-                </td>
-           </tr>
-       </table>
-    </div>
-</div>
+{{template "header" .}}
+{{template "menu" .}}
 
 <div class="container pad-b">
     <div id="content" class="pad-t container">
-        <table>
-            <tr>
-                <td></td>
-                {{if .prev}}
-                <td><h3><a href='{{.prev_url}}'>&lt&nbsp{{.prev}}</a></h3></td>
-                {{end}}
-                {{if .next}}
-                <td><h3 align="right"><a href='{{.next_url}}'>{{.next}} &gt</a></h3></td>
-                {{end}}
-            </tr>
-        </table>
+        {{template "projectLinks" .}}
 
         {{block "content" .}}
         {{end}}
 
-        <table class="pad-t">
-            <tr>
-                <td></td>
-                {{if .prev}}
-                <td><h3><a href='{{.prev_url}}'>&lt&nbsp{{.prev}}</a></h3></td>
-                {{end}}
-                {{if .next}}
-                <td><h3 align="right"><a href='{{.next_url}}'>{{.next}} &gt</a></h3></td>
-                {{end}}
-            </tr>
-        </table>
+        {{template "projectLinks" .}}
     </div>
 </div>
 
