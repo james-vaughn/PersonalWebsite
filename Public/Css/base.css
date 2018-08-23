@@ -11,15 +11,15 @@ html {
 h1 {
     text-align: center;
     margin: 0;
-    font-size: 40;
+    font-size: 40px;
 }
 
 h2 {
-    font-size: 32;
+    font-size: 32px;
 }
 
 h3 {
-    font-size: 26;
+    font-size: 26px;
 }
 
 ul, p {
@@ -28,7 +28,7 @@ ul, p {
 }
 
 p {
-    font-size: 20;
+    font-size: 20px;
     text-align: justify;
 }
 
