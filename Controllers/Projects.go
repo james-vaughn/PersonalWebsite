@@ -2,65 +2,53 @@ package Controllers
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/james-vaughn/PersonalWebsite/Models"
+	"github.com/james-vaughn/PersonalWebsite/Services"
 	"net/http"
-
-	"github.com/james-vaughn/PersonalWebsite/Repositories"
 )
 
 type ProjectsController struct{
-	Aggregate *Repositories.Aggregate
+	PagesService *Services.PagesService
+	pages        []Models.Page
 }
 
-func NewProjectsController(aggregate *Repositories.Aggregate) *ProjectsController {
-	return &ProjectsController{Aggregate: aggregate}
+const ControllerName = "projects"
+
+func NewProjectsController(pagesService *Services.PagesService) *ProjectsController {
+	return &ProjectsController{
+		PagesService: pagesService,
+		pages :       pagesService.GetPagesFor("projects"),
+	}
 }
 
 func (c *ProjectsController) RegisterRoutes(r *gin.Engine) {
-	r.GET("/projects/", c.Index)
-	r.GET("/projects/termites", c.Termites)
-	r.GET("/projects/particles", c.Particles)
-	r.GET("/projects/markovchains", c.MarkovChains)
-	r.GET("/projects/seircolor", c.SeirColor)
+	r.GET("/"+ControllerName, c.Index)
+
+	for _, page := range c.pages {
+		url := c.PagesService.GetUrlFor(page)
+		r.GET(url, c.ProjectPage(page))
+	}
 }
 
-func (*ProjectsController) Index(context *gin.Context) {
-	context.HTML(http.StatusOK, "projectsIndex.tmpl", gin.H {
-		"title" : "Welcome",
+func (c *ProjectsController) Index(context *gin.Context) {
+
+	context.HTML(http.StatusOK, "projectsindex.tmpl", gin.H {
+		"title" : "Projects",
+		"projects" : c.pages,
 	})
 }
 
-func (*ProjectsController) Termites(context *gin.Context) {
-	context.HTML(http.StatusOK, "termites.tmpl", gin.H {
-		"title" : "Termites",
-		"next_url" : "/projects/particles",
-		"next" : "Particles",
-	})
-}
+func (c *ProjectsController) ProjectPage(page Models.Page) func(*gin.Context){
+	return func(context *gin.Context) {
+		prevPage := c.PagesService.GetPage(c.pages, page.PrevId)
+		nextPage := c.PagesService.GetPage(c.pages, page.NextId)
 
-func (*ProjectsController) Particles(context *gin.Context) {
-	context.HTML(http.StatusOK, "particles.tmpl", gin.H {
-		"title" : "Particles",
-		"next_url" : "/projects/markovchains",
-		"next" : "Markov Chains",
-		"prev_url" : "/projects/termites",
-		"prev" : "Termites",
-	})
-}
-
-func (*ProjectsController) MarkovChains(context *gin.Context) {
-	context.HTML(http.StatusOK, "markovChains.tmpl", gin.H {
-		"title" : "Markov Chains",
-		"prev_url" : "/projects/particles",
-		"prev" : "Particles",
-		"next_url" : "/projects/seircolor",
-		"next" : "Seir Model - Color",
-	})
-}
-
-func (*ProjectsController) SeirColor(context *gin.Context) {
-	context.HTML(http.StatusOK, "seirColor.tmpl", gin.H {
-		"title" : "Seir Model - Color",
-		"prev_url" : "/projects/markovchains",
-		"prev" : "Markov Chains",
-	})
+		context.HTML(http.StatusOK, page.Url+".tmpl", gin.H {
+			"title" : page.Title,
+			"prev_url" : c.PagesService.GetUrlFor(prevPage),
+			"prev" : prevPage.Title,
+			"next_url" : c.PagesService.GetUrlFor(nextPage),
+			"next" : nextPage.Title,
+		})
+	}
 }

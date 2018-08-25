@@ -3,24 +3,20 @@ package Controllers
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
-
-	"github.com/james-vaughn/PersonalWebsite/Repositories"
 )
 
-type HomeController struct{
-	Aggregate *Repositories.Aggregate
-}
+type HomeController struct{}
 
-func NewHomeController(aggregate *Repositories.Aggregate) *HomeController {
-	return &HomeController{Aggregate: aggregate}
+func NewHomeController() *HomeController {
+	return &HomeController{}
 }
 
 func (c *HomeController) RegisterRoutes(r *gin.Engine) {
 	r.GET("/", c.Index)
 }
 
-func (*HomeController) Index(c *gin.Context) {
-	c.HTML(http.StatusOK, "homeIndex.tmpl", gin.H {
+func (*HomeController) Index(context *gin.Context) {
+	context.HTML(http.StatusOK, "homeindex.tmpl", gin.H {
 		"title" : "Welcome",
 	})
 }

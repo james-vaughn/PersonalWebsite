@@ -2,12 +2,12 @@ package Middleware
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/james-vaughn/PersonalWebsite/Repositories"
 	"github.com/james-vaughn/PersonalWebsite/Models"
+	"github.com/james-vaughn/PersonalWebsite/Services"
 	"strings"
 )
 
-func StatsTracker(repository *Repositories.Aggregate) gin.HandlerFunc{
+func StatsTracker(statsService *Services.StatsService) gin.HandlerFunc{
 	return func (context *gin.Context) {
 		//Trying to only grab pages and not resources
 		//TODO improve
@@ -17,7 +17,7 @@ func StatsTracker(repository *Repositories.Aggregate) gin.HandlerFunc{
 				Page:      context.Request.URL.Path,
 			}
 
-			repository.StatsRepository.Create(stat)
+			statsService.Create(stat)
 		}
 	}
 }

@@ -1,0 +1,15 @@
+{{template "base" .}}
+
+{{define "content"}}
+
+<p>
+    <ol align="left">
+        {{range .projects}}
+        <li>
+            <a href="/{{.Controller}}/{{.Url}}">{{.Title}}</a>
+        </li>
+        {{end}}
+    </ol>
+</p>
+
+{{end}}

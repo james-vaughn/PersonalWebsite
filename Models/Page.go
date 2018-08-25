@@ -5,7 +5,8 @@ import "github.com/jinzhu/gorm"
 type Page struct {
 	gorm.Model
 	Title 	string
+	Controller string
 	Url  	string
-	PrevId  int
-	NextId  int
+	PrevId  uint
+	NextId  uint
 }

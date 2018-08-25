@@ -1,10 +1,11 @@
 package main
 
 import (
+	"github.com/james-vaughn/PersonalWebsite/Services"
 	"path/filepath"
 
-	"github.com/gin-gonic/gin"
 	"github.com/gin-contrib/multitemplate"
+	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 
@@ -20,21 +21,24 @@ func main() {
 	}
 	defer db.Close()
 
-	aggregate := Repositories.NewAggregate(db)
+	repositoryAggregate := Repositories.NewAggregate(db)
+
+	statsService := Services.NewStatsService(repositoryAggregate.StatsRepository)
+	pagesService := Services.NewPagesService(repositoryAggregate.PagesRepository)
 
 	controllers := []Controllers.Controller{
-		Controllers.NewHomeController(aggregate),
-		Controllers.NewProjectsController(aggregate),
+		Controllers.NewHomeController(),
+		Controllers.NewProjectsController(pagesService),
 	}
 
-	r := createRouter(aggregate, controllers...)
+	r := createRouter(statsService, controllers...)
 	r.Run(PORT)
 }
 
-func createRouter(aggregate *Repositories.Aggregate, controllers ...Controllers.Controller) *gin.Engine {
+func createRouter(statsService *Services.StatsService, controllers ...Controllers.Controller) *gin.Engine {
 	r := gin.Default()
 	r.Use(gin.Recovery())
-	r.Use(Middleware.StatsTracker(aggregate))
+	r.Use(Middleware.StatsTracker(statsService))
 	r.LoadHTMLGlob("Views/*/*")
 	r.HTMLRender = loadTemplates("./Views")
 	r.Static("/Public", "./Public")
