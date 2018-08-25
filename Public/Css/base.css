@@ -92,6 +92,11 @@ a:hover {
     text-align: justify;
 }
 
+.display-img-2 {
+    width: 49%;
+    text-align: justify;
+}
+
 #navbar {
     background: #655555;
     border-radius: 15px;

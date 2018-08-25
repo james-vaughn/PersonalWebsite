@@ -5,9 +5,10 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-contrib/multitemplate"
-	"github.com/james-vaughn/PersonalWebsite/Controllers"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
+
+	"github.com/james-vaughn/PersonalWebsite/Controllers"
 	"github.com/james-vaughn/PersonalWebsite/Middleware"
 	"github.com/james-vaughn/PersonalWebsite/Repositories"
 )
@@ -22,8 +23,8 @@ func main() {
 	aggregate := Repositories.NewAggregate(db)
 
 	controllers := []Controllers.Controller{
-		&Controllers.HomeController{},
-		&Controllers.ProjectsController{},
+		Controllers.NewHomeController(aggregate),
+		Controllers.NewProjectsController(aggregate),
 	}
 
 	r := createRouter(aggregate, controllers...)
