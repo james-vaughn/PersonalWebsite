@@ -3,13 +3,14 @@
 {{define "content"}}
 
 <p>
-    <ol align="left">
+    <table id="post-table">
         {{range .projects}}
-        <li>
-            <a href="/{{.Controller}}/{{.Url}}">{{.Title}}</a>
-        </li>
+        <tr>
+            <td><a href="/{{.Controller}}/{{.Url}}">{{.Title}}</a></td>
+            <td>{{.Description}}</td>
+        </tr>
         {{end}}
-    </ol>
+    </table>
 </p>
 
 {{end}}

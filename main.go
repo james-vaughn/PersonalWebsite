@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/james-vaughn/PersonalWebsite/Middleware"
 	"github.com/james-vaughn/PersonalWebsite/Services"
 	"path/filepath"
 
@@ -10,7 +11,6 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 
 	"github.com/james-vaughn/PersonalWebsite/Controllers"
-	"github.com/james-vaughn/PersonalWebsite/Middleware"
 	"github.com/james-vaughn/PersonalWebsite/Repositories"
 )
 
@@ -31,14 +31,14 @@ func main() {
 		Controllers.NewProjectsController(pagesService),
 	}
 
-	r := createRouter(statsService, controllers...)
+	r := createRouter(controllers...)
+	addMiddleware(r, statsService)
+
 	r.Run(PORT)
 }
 
-func createRouter(statsService *Services.StatsService, controllers ...Controllers.Controller) *gin.Engine {
+func createRouter(controllers ...Controllers.Controller) *gin.Engine {
 	r := gin.Default()
-	r.Use(gin.Recovery())
-	r.Use(Middleware.StatsTracker(statsService))
 	r.LoadHTMLGlob("Views/*/*")
 	r.HTMLRender = loadTemplates("./Views")
 	r.Static("/Public", "./Public")
@@ -48,6 +48,11 @@ func createRouter(statsService *Services.StatsService, controllers ...Controller
 	}
 
 	return r
+}
+
+func addMiddleware(r *gin.Engine, statsService *Services.StatsService) {
+	r.Use(gin.Recovery())
+	r.Use(Middleware.StatsTracker(statsService))
 }
 
 func loadTemplates(templatesDir string) multitemplate.Renderer {

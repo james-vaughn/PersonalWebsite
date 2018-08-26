@@ -1,13 +1,14 @@
 {{define "projectLinks"}}
-<table>
-    <tr>
-        <td></td>
-        {{if .prev}}
-        <td><h3><a href='{{.prev_url}}'>&lt&nbsp{{.prev}}</a></h3></td>
-        {{end}}
+<div id="next-prev">
+    <div>
+            {{if .prev}}
+            <h3><a href='{{.prev_url}}'>&lt&nbsp{{.prev}}</a></h3>
+            {{end}}
+    </div>
+    <div>
         {{if .next}}
-        <td><h3 align="right"><a href='{{.next_url}}'>{{.next}} &gt</a></h3></td>
+        <h3 align="right"><a href='{{.next_url}}'>{{.next}} &gt</a></h3>
         {{end}}
-    </tr>
-</table>
+    </div>
+</div>
 {{end}}

@@ -8,12 +8,6 @@ html {
     background: #222222;
 }
 
-h1 {
-    text-align: center;
-    margin: 0;
-    font-size: 40px;
-}
-
 h2 {
     font-size: 32px;
 }
@@ -22,26 +16,26 @@ h3 {
     font-size: 26px;
 }
 
-ul, p {
+p {
     padding-top: 10px;
     margin: 0;
-}
-
-p {
     font-size: 20px;
     text-align: justify;
 }
 
-tr > td:last-child {
-    width:100%;
-}
-
 a {
     color: #90B0DA;
+    text-decoration: none;
 }
 
 a:hover {
     color: #B0B0E0;
+}
+
+#title {
+    text-align: center;
+    margin: 0;
+    font-size: 40px;
 }
 
 #menu {
@@ -60,22 +54,22 @@ a:hover {
     display: none;
     position: absolute;
     background-color: #444444;
-    min-width: 160px;
+    min-width: 180px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
     border-radius: 15px;
 }
 
 .dropdown-content a {
-    font-size: 20px;
+    font-size: 24px;
     padding: 12px 20px;
     text-decoration: none;
     display: block;
     border-radius: 15px;
 
-    transition: background .25s ease-in-out;
-    -moz-transition: background .25s ease-in-out;
-    -webkit-transition: background .25s ease-in-out;
+    transition: background .15s ease-in-out;
+    -moz-transition: background .15s ease-in-out;
+    -webkit-transition: background .15s ease-in-out;
 }
 
 .dropdown-content a:hover {
@@ -87,20 +81,31 @@ a:hover {
     width: 100%;
 }
 
-.display-img {
-    width: 31%;
-    text-align: justify;
-}
-
 .display-img-2 {
     width: 49%;
     text-align: justify;
 }
 
+.display-img-3 {
+    width: 31%;
+    text-align: justify;
+}
+
 #navbar {
+    display: inline;
+}
+
+#navbar > div:first-child{
+    float: left;
+    padding-top: 12px;
+}
+
+#navbar > div{
+    width: auto;
     background: #655555;
     border-radius: 15px;
 }
+
 
 #content {
     text-align: center;
@@ -121,4 +126,38 @@ a:hover {
 
 .pad-b {
     padding-bottom: 30px;
+}
+
+#post-table {
+    padding-top: 10px;
+    margin: 0;
+    font-size: 22px;
+    text-align: justify;
+}
+
+#post-table td:first-child {
+    width: 20%;
+}
+
+#post-table td {
+    width: 50%;
+}
+
+#next-prev {
+    width: 100%;
+    display: inline-block;
+}
+
+
+
+#next-prev div:first-child {
+    text-align: left;
+    width: 33%;
+    float: left;
+}
+
+#next-prev div {
+    text-align: right;
+    width: 33%;
+    display: inline;
 }

@@ -18,7 +18,7 @@ func (s *PagesService) GetPagesFor(controller string) []Models.Page{
 	return s.PagesRepository.GetPagesFor(controller)
 }
 
-func (s *PagesService) GetPage(pages []Models.Page, id uint) Models.Page {
+func (s *PagesService) GetPageFromList(pages []Models.Page, id uint) Models.Page {
 	for _, page := range pages {
 		if page.ID == id {
 			return page

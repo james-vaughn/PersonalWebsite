@@ -17,7 +17,7 @@ const ControllerName = "projects"
 func NewProjectsController(pagesService *Services.PagesService) *ProjectsController {
 	return &ProjectsController{
 		PagesService: pagesService,
-		pages :       pagesService.GetPagesFor("projects"),
+		pages :       pagesService.GetPagesFor(ControllerName),
 	}
 }
 
@@ -40,8 +40,8 @@ func (c *ProjectsController) Index(context *gin.Context) {
 
 func (c *ProjectsController) ProjectPage(page Models.Page) func(*gin.Context){
 	return func(context *gin.Context) {
-		prevPage := c.PagesService.GetPage(c.pages, page.PrevId)
-		nextPage := c.PagesService.GetPage(c.pages, page.NextId)
+		prevPage := c.PagesService.GetPageFromList(c.pages, page.PrevId)
+		nextPage := c.PagesService.GetPageFromList(c.pages, page.NextId)
 
 		context.HTML(http.StatusOK, page.Url+".tmpl", gin.H {
 			"title" : page.Title,
