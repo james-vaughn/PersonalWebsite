@@ -51,6 +51,9 @@ a:hover {
 
 #menu-icon {
     padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 12px;
+    padding-bottom: 12px;
     height: 20px;
     cursor: pointer;
 }
@@ -102,7 +105,6 @@ a:hover {
 
 #navbar > div:first-child{
     float: left;
-    padding-top: 12px;
 }
 
 #navbar > div{
