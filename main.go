@@ -1,9 +1,10 @@
 package main
 
 import (
+	"path/filepath"
+
 	"github.com/james-vaughn/PersonalWebsite/Middleware"
 	"github.com/james-vaughn/PersonalWebsite/Services"
-	"path/filepath"
 
 	"github.com/gin-contrib/multitemplate"
 	"github.com/gin-gonic/gin"
@@ -14,6 +15,14 @@ import (
 	"github.com/james-vaughn/PersonalWebsite/Repositories"
 )
 
+var (
+	repositoryAggregate *Repositories.Aggregate
+	statsService        *Services.StatsService
+	pagesService        *Services.PagesService
+	homeController      *Controllers.HomeController
+	projectsController  *Controllers.ProjectsController
+)
+
 func main() {
 	db, err := gorm.Open("sqlite3", DB_NAME)
 	if err != nil {
@@ -21,24 +30,27 @@ func main() {
 	}
 	defer db.Close()
 
-	repositoryAggregate := Repositories.NewAggregate(db)
+	injectDependencies(db)
 
-	statsService := Services.NewStatsService(repositoryAggregate.StatsRepository)
-	pagesService := Services.NewPagesService(repositoryAggregate.PagesRepository)
-
-	controllers := []Controllers.Controller{
-		Controllers.NewHomeController(),
-		Controllers.NewProjectsController(pagesService),
-	}
-
-	r := createRouter(controllers...)
-	addMiddleware(r, statsService)
-
+	r := createRouter()
 	r.Run(PORT)
 }
 
-func createRouter(controllers ...Controllers.Controller) *gin.Engine {
+func createRouter() *gin.Engine {
 	r := gin.Default()
+	addMiddleware(r, statsService)
+	setUpRouter(r, homeController, projectsController)
+
+	return r
+}
+
+func addMiddleware(r *gin.Engine, statsService *Services.StatsService) {
+	r.Use(gin.Recovery())
+	r.Use(Middleware.StatsTracker(statsService))
+}
+
+func setUpRouter(r *gin.Engine, controllers ...Controllers.Controller) *gin.Engine {
+
 	r.LoadHTMLGlob("Views/*/*")
 	r.HTMLRender = loadTemplates("./Views")
 	r.Static("/Public", "./Public")
@@ -48,11 +60,6 @@ func createRouter(controllers ...Controllers.Controller) *gin.Engine {
 	}
 
 	return r
-}
-
-func addMiddleware(r *gin.Engine, statsService *Services.StatsService) {
-	r.Use(gin.Recovery())
-	r.Use(Middleware.StatsTracker(statsService))
 }
 
 func loadTemplates(templatesDir string) multitemplate.Renderer {
@@ -75,4 +82,14 @@ func loadTemplates(templatesDir string) multitemplate.Renderer {
 		r.AddFromFiles(filepath.Base(include), files...)
 	}
 	return r
+}
+
+func injectDependencies(db *gorm.DB) {
+	repositoryAggregate := Repositories.NewAggregate(db)
+
+	statsService = Services.NewStatsService(repositoryAggregate.StatsRepository)
+	pagesService = Services.NewPagesService(repositoryAggregate.PagesRepository)
+
+	homeController = Controllers.NewHomeController()
+	projectsController = Controllers.NewProjectsController(pagesService)
 }
