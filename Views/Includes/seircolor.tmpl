@@ -6,12 +6,41 @@
 
 <h3>Concept</h3>
 <p>
-<a href="http://www.public.asu.edu/~hnesse/classes/seir.html">Model website.</a>
+The SEIR model is an epidemiological model for describing the rates of illness spread and recovery over time.
+S represents susceptible members of the population, E is the exposed members, I is the infected members, and
+R is the recovered members. The model also has parameters for illness recovery and infection speed,
+as well as "spreadibility." Over time, members should move from susceptible to infected and finally to recovered,
+where they will remain for the rest of this model's calculations. Other models may move members back into susceptible.
+<a href="http://www.public.asu.edu/~hnesse/classes/seir.html">Here is a link to a website demostrating the model.</a>
+The idea for this project is to try and use the model to generate the colors which will be applied to a canvas.
 </p>
 
 <h3>Generation</h3>
 <p>
+The calculations for the models follow the ones given in the link above. Each of the derivatives
+are a single step of the calculation. We just need the starting configuration, and then we can
+step through the model, day by day, effectively using Euler's method to compute the values we need.
+A different model is used for each row of pixels of the image so that there is a flow to the image.
+The starting configuration used per row is:
+</p>
 
+<ul>
+<li>S = Height of the image + an offset - the y position of the row of pixels</li>
+<li>E = 0</li>
+<li>I = 1 to start the infection</li>
+<li>R = N - S where N is the rest of the population.</li>
+</ul>
+
+<p>
+The offset is added to prevent the model from starting out with only recovered individuals, giving more color variation.
+The actual color at a given point is determined by looking at the proportions of S, I, and R.
+S corresponds to Red, I corresponds to Green, and R corresponds to Blue. In a case where S is 80% of the population,
+I is 15%, and R is 5%, the corresponding color would be R = .8 * 65535 (the maximum component value for a 64-bit color),
+G = .15 * 65535, and B = .05 * 65535, corresponding to <a href="https://www.colorhexa.com/cc160c">#CC260C.</a>
+Since the model flows from S to I to R smoothly, this created a gradient, as seen below.
+The colors were then used pulled from top to bottom, left to right and used to assemble the final image.
+The actual image reused the logic from the Markov Chain project to pick the locations of each color.
+The gradient is effectively rearranged into radial patterns with a set number of centers.
 </p>
 
 <div class="pad-t pad-b">
@@ -21,7 +50,9 @@
 
 <h3>Post Processing</h3>
 <p>
-
+The final image just has a mosaic distortion applied to it, which is a voronoi diagram that uses
+<a href="https://www.jasondavies.com/poisson-disc/">poisson-disc sampling</a> to create similarly sized pieces.
+The colors within each piece are averaged to produce the final color, with some distortion applied for variance.
 </p>
 
 <div class="pad-t pad-b">

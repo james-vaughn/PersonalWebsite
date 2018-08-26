@@ -23,6 +23,11 @@ p {
     text-align: justify;
 }
 
+ul {
+    font-size: 18px;
+    text-align: left;
+}
+
 a {
     color: #90B0DA;
     text-decoration: none;
