@@ -16,11 +16,12 @@ import (
 )
 
 var (
-	repositoryAggregate *Repositories.Aggregate
-	statsService        *Services.StatsService
-	pagesService        *Services.PagesService
-	homeController      *Controllers.HomeController
-	projectsController  *Controllers.ProjectsController
+	repositoryAggregate     *Repositories.Aggregate
+	statsService            *Services.StatsService
+	pagesService            *Services.PagesService
+	homeController          *Controllers.HomeController
+	generativeArtController *Controllers.GenerativeArtController
+	steganographyController *Controllers.SteganographyController
 )
 
 func main() {
@@ -39,7 +40,8 @@ func main() {
 func createRouter() *gin.Engine {
 	r := gin.Default()
 	addMiddleware(r, statsService)
-	setUpRouter(r, homeController, projectsController)
+	setUpRouter(r, homeController, generativeArtController,
+		steganographyController)
 
 	return r
 }
@@ -91,5 +93,6 @@ func injectDependencies(db *gorm.DB) {
 	pagesService = Services.NewPagesService(repositoryAggregate.PagesRepository)
 
 	homeController = Controllers.NewHomeController()
-	projectsController = Controllers.NewProjectsController(pagesService)
+	generativeArtController = Controllers.NewGenerativeArtController(pagesService)
+	steganographyController = Controllers.NewStegonographyController(pagesService)
 }

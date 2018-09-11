@@ -8,22 +8,22 @@ import (
 	"github.com/james-vaughn/PersonalWebsite/Services"
 )
 
-type ProjectsController struct {
+type SteganographyController struct {
 	PagesService *Services.PagesService
 	pages        []Models.Page
 }
 
-const ControllerName = "projects"
+const SteganographyControllerName = "steganography"
 
-func NewProjectsController(pagesService *Services.PagesService) *ProjectsController {
-	return &ProjectsController{
+func NewStegonographyController(pagesService *Services.PagesService) *SteganographyController {
+	return &SteganographyController{
 		PagesService: pagesService,
-		pages:        pagesService.GetPagesFor(ControllerName),
+		pages:        pagesService.GetPagesFor(SteganographyControllerName),
 	}
 }
 
-func (c *ProjectsController) RegisterRoutes(r *gin.Engine) {
-	r.GET("/"+ControllerName+"/", c.Index)
+func (c *SteganographyController) RegisterRoutes(r *gin.Engine) {
+	r.GET("/"+SteganographyControllerName+"/", c.Index)
 
 	for _, page := range c.pages {
 		url := c.PagesService.GetUrlFor(page)
@@ -31,15 +31,15 @@ func (c *ProjectsController) RegisterRoutes(r *gin.Engine) {
 	}
 }
 
-func (c *ProjectsController) Index(context *gin.Context) {
+func (c *SteganographyController) Index(context *gin.Context) {
 
-	context.HTML(http.StatusOK, "projectsindex.tmpl", gin.H{
-		"title":    "Projects",
+	context.HTML(http.StatusOK, "projectstable.tmpl", gin.H{
+		"title":    "Steganography",
 		"projects": c.pages,
 	})
 }
 
-func (c *ProjectsController) ProjectPage(page Models.Page) func(*gin.Context) {
+func (c *SteganographyController) ProjectPage(page Models.Page) func(*gin.Context) {
 	return func(context *gin.Context) {
 		prevPage := c.PagesService.GetPageFromList(c.pages, page.PrevId)
 		nextPage := c.PagesService.GetPageFromList(c.pages, page.NextId)
