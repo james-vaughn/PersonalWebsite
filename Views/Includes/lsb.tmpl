@@ -4,21 +4,85 @@
 
 <h3>Concept</h3>
 <p>
-
+Least Significant Bit steganography is a steganographinc technique
+in which message bits are stored in the junior bits of the cover image
+pixels. The reasoning behind this is that changes to the least
+significant bits of a color component produce very small changes
+that are impossible to notice by the naked eye. For example, below
+are two colors which differ in their least 2 significant bits. As such,
+it is hard to detect the hidden message if the attacking party
+is not actively looking for one. Another draw of this technique
+is that it is very simple, and it is capable of storing a large
+capacity of message bits. It can store up to 3 bits per pixel
+color component before producing noticeable artifacts.
 </p>
 
-<h3>Implementation</h3>
-<p>
+<table class="pad-t pad-b" style="text-align: center">
+    <tr>
+        <td>
+            <svg class="display-img-2">
+                <rect width="200" height="250" style="fill:rgb(68,196,80);"/>
+            </svg>
+        </td>
+        <td>
+            <svg class="display-img-2">
+                <rect width="200" height="250" style="fill:rgb(71,199,83);"/>
+            </svg>
+        </td>
+    </tr>
+    <tr>
+        <td>rgb(68,196,80)</td>
+        <td>rgb(71,199,83)</td>
+    </tr>
 
+</table>
+
+<h3>Encoding</h3>
+<p>
+The encoding process for LSB is straight forward.
+We iterate over each color plane (R, then G, then B) and for each
+we start embedding the message from the top left to the bottom right.
+To embed the message, we replace n least significant bits of the
+current color plane with n bits from the message. So if the message
+is 10110001 and we choose n = 2, the red component of pixel (0,0)
+would be changed to xxxxxx10, (0, 1) to xxxxxx11, (0, 2) to xxxxxx00,
+and (0,3) to xxxxxx01. We continue until either the message is
+exhausted or we run out of pixel values to store the message
+in. If we reach the end of the message, we need to insert
+byte 0x00 (the null terminator character) at the end of the
+message to indicate the message has concluded.
+</p>
+
+<h3>Decoding</h3>
+<p>
+The decoding process for LSB is a mirror image of the encoding process.
+We need to iterate through the color data in the same manor
+as we did to encode the message. For each component we append
+the least significant n bits to our message. N will have to be
+agreed on ahead of time. We continue appending bits until
+we reach the termination character (0x00) or have exhausted the
+image data. At the end, we just need to interpret the bits
+we have collected as our hidden message.
 </p>
 
 <h3>Performance</h3>
 <p>
-
+LSB encoding and decoding is a very quick process, taking roughly
+.022 ms to encode a single word with n=1. LSB also has the benefit of
+being able to encode about 25,000 words per 1024x1024 image with n=1,
+meaning that encoding a large novel would be no trouble.
+In fact, below on the right is an image with a 25,000 word
+message encoded into it, with the original image on the left.
+Unfortunately, LSB is easily detected and destroyed
+due to the noise it creates in the LSB bit planes.
+Passive warden techniques, such as Raw Quick Pair, perform well against
+LSB encoding compared to other steganography techniques.
+Compared to other techniques, LSB does not provide good security.
 </p>
 
 <div class="pad-t pad-b">
-
+    <img src="/Public/Images/Lsb/1.png" class="display-img-2" />
+    <img src="/Public/Images/Lsb/2.png" class="display-img-2" />
 </div>
 
 {{end}}
